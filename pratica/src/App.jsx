@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -112,6 +112,40 @@ function App() {
 
       <hr />
       <Catalogo />
+    </div>
+  );
+}
+
+function ListaProdutos () {
+  const [produtos, setProdutos] = useState([]);
+  const [carregando, setCarregando] = useState (true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const dadosFicticios = [
+        { id: 1, nome: 'Teclado Mecânico', preco: 250},
+        { id: 2, nome: 'Mouse Gamer', preco: 150},
+        { id: 3, nome: 'Monitor 144Hz', preco: 1200},
+      ];
+      setProdutos(dadosFicticios);
+      setCarregando(false);
+    }, 2000);
+    return() => clearTimeout(timer);
+  }, []);
+
+  if (carregando) {
+    return <p>Carregando produtos...</p>;
+  }
+  return (
+    <div>
+      <h2>Nossos Produtos</h2>
+      <ul>
+        {produtos.map(produto => (
+          <li key={produto.id}>
+            {produto.nome} - R$ {produto.preco}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
